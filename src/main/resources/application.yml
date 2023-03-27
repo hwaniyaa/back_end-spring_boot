@@ -1,0 +1,23 @@
+
+server:
+  port: 9090
+
+spring:
+  output:
+    ansi:
+      enabled: always
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@localhost:1521:xe
+    username: TIS001
+    password: 1234
+
+logging:
+  level: 
+    '[com.rlfghks12q.ch06]': DEBUG
+
+mybatis:
+  config-location: classpath:mapper/config/config.xml
+  mapper-locations: classpath:mapper/sqlmapper/**/*.xml
+# netstat -ano | findstr 9090
+# taskkill /f /pid 0000

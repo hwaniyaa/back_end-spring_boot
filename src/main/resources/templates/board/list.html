@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" 
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org" 
+layout:decorate="~{/layout/layout.html}">
+<head>
+  <title>list</title>
+</head>
+<body>
+  <div class="container" id="contents" layout:fragment="contents">
+    <h2>list</h2>
+    <!-- <p th:text="${msg}">메세지 출력하는 곳</p> -->
+    <table class="table table-striped">
+      <colgroup>
+        <col style="width:50px">
+        <col>
+        <col style="width:200px">
+        <col style="width:200px">
+        <col style="width:50px">
+      </colgroup>
+      <thead>
+        <tr class="text-center">
+          <th scope="col" >NO</th>
+          <th scope="col">SUBJECT</th>
+          <th scope="col">WRITER</th>
+          <th scope="col">DATE</th>
+          <th scope="col">HIT</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="item : ${boardList}" class="text-center">
+          <td th:text="${item.no}"></td>
+          <td class="text-start ps-sm-5">
+            <a href="/board/view" th:href="@{/board/view(no=${item.no})}" th:text="${item.subject}" >
+            </a>
+          </td>
+          <td th:text="${item.writer}"></td>
+          <td th:text="${item.regDate}"></td>
+          <td th:text="${item.hit}"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

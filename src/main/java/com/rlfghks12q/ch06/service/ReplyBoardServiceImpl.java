@@ -4,6 +4,7 @@ import com.rlfghks12q.ch06.dao.ReplyBoardDao;
 import com.rlfghks12q.ch06.dto.ReplyBoardDto;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,14 @@ public class ReplyBoardServiceImpl implements ReplyBoardService {
     return result;
   }
 
-  public List<ReplyBoardDto> getAllBoardList() {
-    List<ReplyBoardDto> boardList = replyBoardDao.getAllBoardList();
+  public List<ReplyBoardDto> getAllBoardList(
+    String category,
+    String searchTxt
+  ) {
+    HashMap<String, Object> hashMap = new HashMap<>();
+    hashMap.put("category", category);
+    hashMap.put("searchTxt", searchTxt);
+    List<ReplyBoardDto> boardList = replyBoardDao.getAllBoardList(hashMap);
     return boardList;
   }
 
@@ -74,4 +81,35 @@ public class ReplyBoardServiceImpl implements ReplyBoardService {
   public int updateReLevel(ReplyBoardDto replyBoardDto) {
     return replyBoardDao.updateReLevel(replyBoardDto);
   }
+
+  public int deleteReplyBoard(ReplyBoardDto replyBoardDto) {
+    int result = replyBoardDao.deleteReplyBoard(replyBoardDto);
+    return result;
+  }
+
+  public List<ReplyBoardDto> getSearchBoardList(String searchTxt) {
+    // List<ReplyBoardDto> boardList = replyBoardDao.getSearchBoardList(searchTxt);
+    return null;
+  }
+
+  // 게시글 수정
+  @Override
+  public int modifyReplyBoard(ReplyBoardDto replyBoardDto) {
+    int result = replyBoardDao.modifyReplyBoard(replyBoardDto);
+    return result;
+  }
+
+  // 이전글
+  @Override
+  public ReplyBoardDto getPrevSelect(int num) {
+    ReplyBoardDto replyBoardDto = replyBoardDao.getPrevSelect(num);
+    return replyBoardDto;
+  }
+  // 다음글
+  @Override
+  public ReplyBoardDto getNextSelect(int num) {
+    ReplyBoardDto replyBoardDto = replyBoardDao.getNextSelect(num);
+    return replyBoardDto;
+  }
+  
 }

@@ -33,10 +33,30 @@
       0
     )
   </insert>
-  <select id="getAllBoardList" resultType="ReplyBoardDto">
+  <select id="getAllBoardList" resultType="ReplyBoardDto" parameterType="HashMap">
     <!-- SELECT * FROM REPLYBOARD03 -->
     SELECT ROWNUM AS NUM, B.* from
-      ( SELECT * FROM REPLYBOARD03 ORDER BY REGROUP DESC, RELEVEL ASC ) B
+      ( SELECT * FROM REPLYBOARD03   
+    <if test="category != null and searchTxt!=''">
+      <choose>
+        <when test="category == 'all'">
+          WHERE 
+            (subject LIKE '%' || #{searchTxt} || '%') OR 
+            (writer LIKE '%' || #{searchTxt} || '%') OR 
+            (contents LIKE '%' || #{searchTxt} || '%') 
+        </when>
+        <when test="category == 'subject'">
+          WHERE (subject LIKE '%' || #{searchTxt} || '%')
+        </when>
+        <when test="category == 'writer'">
+          WHERE (writer LIKE '%' || #{searchTxt} || '%')
+        </when>
+        <when test="category == 'contents'">
+          WHERE (contents LIKE '%' || #{searchTxt} || '%')
+        </when>
+      </choose>
+    </if>
+      ORDER BY REGROUP DESC, RELEVEL ASC ) B
   </select>
 
   <select id="getSelectOne" resultType="ReplyBoardDto" parameterType="Integer">
@@ -56,4 +76,25 @@
     WHERE REGROUP = #{reGroup} AND RELEVEL <![CDATA[ > ]]> #{reLevel}
   </update>
 
+  <update id="deleteReplyBoard" parameterType="ReplyBoardDto">
+    UPDATE REPLYBOARD03 SET AVAILABLE = 0 WHERE NO = #{no} AND PASSWORD = #{password}
+  </update>
+
+  <!-- 게시글 수정 -->
+  <update id="modifyReplyBoard" parameterType="ReplyBoardDto">
+    UPDATE REPLYBOARD03 SET SUBJECT = #{subject}, <!-- WRITER = #{writer},--> CONTENTS = #{contents} WHERE NO = #{no} AND PASSWORD = #{password}
+  </update>
+
+  <!-- 이전글 -->
+  <select id="getPrevSelect" parameterType="Integer" resultType="ReplyBoardDto">
+    SELECT * FROM
+      (SELECT ROWNUM AS NUM, B.* from
+      ( SELECT * FROM REPLYBOARD03 ORDER BY REGROUP DESC, RELEVEL ASC ) B) WHERE NUM = #{num} - 1
+  </select>
+  <!-- 다음글 -->
+  <select id="getNextSelect" parameterType="Integer" resultType="ReplyBoardDto">
+    SELECT * FROM
+      (SELECT ROWNUM AS NUM, B.* from
+      ( SELECT * FROM REPLYBOARD03 ORDER BY REGROUP DESC, RELEVEL ASC ) B) WHERE NUM = #{num} + 1
+  </select>
 </mapper>

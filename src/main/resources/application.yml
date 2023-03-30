@@ -16,6 +16,7 @@ logging:
   level: 
     '[com.rlfghks12q.ch06]': DEBUG
 
+
 mybatis:
   config-location: classpath:mapper/config/config.xml
   mapper-locations: classpath:mapper/sqlmapper/**/*.xml

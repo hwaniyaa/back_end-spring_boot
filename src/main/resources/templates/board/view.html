@@ -35,10 +35,26 @@
     </table>
     <div class="btns text-center">
       <a href="/board/list" class="btn btn-lg btn-primary">LIST</a>
-      <a href="/board/modify" class="btn btn-lg btn-primary">MODIFY</a>
+      <a href="/board/modify?writer=${replyBoardDto.writer}" th:href="@{/board/modify(no=${replyBoardDto.no}, writer=${replyBoardDto.writer})}" class="btn btn-lg btn-primary">MODIFY</a>
       <a href="/board/reply" th:href="@{/board/reply(no=${replyBoardDto.no}, reGroup=${replyBoardDto.reGroup}, reLevel=${replyBoardDto.reLevel}, reStep=${replyBoardDto.reStep})}" class="btn btn-lg btn-primary">REPLY</a>
+      <a href="/board/delete" th:href="@{/board/delete(no=${replyBoardDto.no})}" class="btn btn-lg btn-primary">DELETE</a>
+      <a href="/board/delete_ajax" th:href="@{/board/delete_ajax(no=${replyBoardDto.no})}" class="btn btn-lg btn-primary" id="btnDeleteAjax">DELETE-AJAX</a>
     </div>
-    
+
+    <div class="mt-5 prevAndNext">
+      <div>
+        <span>PREV</span>
+        <a href="" th:if="${prevBoardDto != null}" th:text="${prevBoardDto.subject}" th:href="@{/board/view(no=${replyBoardDto.no}, num=${prevBoardDto.num})}">이전 글</a>
+        <a href="" class="none" th:unless="${prevBoardDto != null}">이전 글이 없습니다.</a>
+      </div>
+        
+      <div>
+        <span>NEXT</span>
+        <a href="" th:if="${nextBoardDto != null}" th:text="${nextBoardDto.subject}" th:href="@{/board/view(no=${replyBoardDto.no}, num=${nextBoardDto.num})}">다음 글</a>
+        <a href="" class="none" th:unless="${nextBoardDto != null}">다음 글이 없습니다.</a>
+      </div>
+        
+    </div>
   </div>
 </body>
 </html>
